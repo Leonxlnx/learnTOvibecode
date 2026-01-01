@@ -11,78 +11,69 @@ const ProblemSection = () => {
     offset: ["start end", "end start"]
   });
 
-  const smoothProgress = useSpring(scrollYProgress, { damping: 15, stiffness: 80 });
+  const smoothProgress = useSpring(scrollYProgress, { damping: 20, stiffness: 80 });
   
-  // Parallax for background elements
-  const yBg = useTransform(smoothProgress, [0, 1], [0, -300]);
-  const yBg2 = useTransform(smoothProgress, [0, 1], [0, -500]);
-  
-  const words = ["LEGACY", "BLOAT", "JQUERY", "SPAGHETTI", "LOADING...", "404", "DIV SOUP", "TEMPLATES"];
+  // Opacity transitions for the text sequence
+  const opacity1 = useTransform(smoothProgress, [0.1, 0.25, 0.3], [0, 1, 0]);
+  const opacity2 = useTransform(smoothProgress, [0.3, 0.45, 0.5], [0, 1, 0]);
+  const opacity3 = useTransform(smoothProgress, [0.5, 0.65, 0.7], [0, 1, 0]);
+  const opacityFinal = useTransform(smoothProgress, [0.75, 0.9], [0, 1]);
+
+  const scaleFinal = useTransform(smoothProgress, [0.75, 1], [0.9, 1]);
 
   return (
-    <section ref={containerRef} className="relative w-full min-h-[120vh] bg-[#0e0e0e] flex flex-col items-center justify-center overflow-hidden border-t border-white/10 py-32 z-10">
+    <section ref={containerRef} className="relative w-full h-[250vh] bg-[#050505] flex flex-col items-center justify-start overflow-hidden border-t border-white/5 z-10">
       
-      {/* --- LAYER 0: 3D BACKGROUND (Brighter) --- */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-100">
-        <Canvas camera={{ position: [0, 0, 6], fov: 50 }}>
+      {/* --- LAYER 0: 3D BACKGROUND (Darker, Premium) --- */}
+      <div className="sticky top-0 h-screen w-full inset-0 z-0 pointer-events-none">
+        <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
           <Suspense fallback={null}>
             <WireframeWave />
           </Suspense>
         </Canvas>
-      </div>
-
-      {/* --- LAYER 1: ATMOSPHERE --- */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0e0e0e] via-transparent to-[#0e0e0e]" />
-        <div className="absolute inset-0 opacity-[0.05] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-      </div>
-
-      {/* --- LAYER 2: FLOATING DEBRIS (More Words) --- */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none font-black text-[#222]">
         
-        {words.map((word, i) => (
-             <motion.div 
-             key={i}
-             style={{ 
-                 y: i % 2 === 0 ? yBg : yBg2, 
-                 x: Math.random() * 100 - 50,
-                 rotate: Math.random() * 20 - 10 
-             }} 
-             className="absolute"
-             initial={{ 
-                 top: `${Math.random() * 80 + 10}%`, 
-                 left: `${Math.random() * 80 + 10}%`,
-                 scale: Math.random() * 1.5 + 0.5
-             }}
-           >
-              <h3 className="text-[8vw] md:text-[10vw] leading-none tracking-tighter opacity-20 hover:opacity-100 transition-opacity duration-300">
-                {word}
-              </h3>
-           </motion.div>
-        ))}
-
+        {/* Vignette & Noise */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#050505_90%)]" />
+        <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
       </div>
 
-      {/* --- LAYER 3: FOREGROUND CONTENT --- */}
-      <div className="relative z-20 text-center px-4 mix-blend-screen max-w-4xl mx-auto">
-        <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "-10%" }}
-            transition={{ duration: 0.8 }}
-        >
-            <h2 className="text-7xl md:text-[8rem] font-black text-white mb-8 tracking-tighter uppercase leading-[0.85]">
-              <span className="block text-[#444]">STATIC</span>
-              <span className="block text-[#888]">IS</span>
-              <span className="block text-white">BROKEN.</span>
-            </h2>
+      {/* --- LAYER 1: SCROLL INTERROGATION --- */}
+      <div className="relative z-20 w-full max-w-4xl mx-auto px-6 h-full flex flex-col items-center">
+        
+        {/* Question 1 */}
+        <div className="absolute top-[20vh] w-full text-center">
+             <motion.h2 style={{ opacity: opacity1, y: useTransform(smoothProgress, [0.1, 0.3], [50, -50]) }} className="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-purple-500 to-purple-900 uppercase tracking-tighter">
+                Purple<br/>Gradient?
+             </motion.h2>
+        </div>
 
-            <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-white/50 to-transparent my-12" />
+        {/* Question 2 */}
+        <div className="absolute top-[20vh] w-full text-center">
+             <motion.h2 style={{ opacity: opacity2, rotate: 2, y: useTransform(smoothProgress, [0.3, 0.5], [50, -50]) }} className="text-6xl md:text-8xl font-serif italic text-white/40 tracking-widest">
+                Wrong<br/>Alignment?
+             </motion.h2>
+        </div>
 
-            <p className="text-xl md:text-3xl text-gray-300 font-light leading-relaxed">
-              We don't build websites. We architect <span className="text-white font-bold border-b border-white">digital organisms</span>.
-            </p>
-        </motion.div>
+        {/* Question 3 */}
+        <div className="absolute top-[20vh] w-full text-center">
+             <motion.h2 style={{ opacity: opacity3, scale: 0.8, y: useTransform(smoothProgress, [0.5, 0.7], [50, -50]) }} className="text-6xl md:text-8xl font-black text-gray-600 uppercase tracking-tighter line-through decoration-red-500/50">
+                TOO<br/>GENERIC?
+             </motion.h2>
+        </div>
+
+        {/* FINAL STATE */}
+        <div className="absolute top-[30vh] w-full text-center mix-blend-screen">
+             <motion.div style={{ opacity: opacityFinal, scale: scaleFinal }}>
+                <p className="text-xl md:text-2xl font-mono text-gray-400 mb-6">
+                    Or just want to explore...
+                </p>
+                <h2 className="text-7xl md:text-[9vw] font-black text-white leading-none tracking-tighter">
+                    THE VIBECODE<br/>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-400 to-gray-800">WORLD</span>
+                </h2>
+             </motion.div>
+        </div>
+
       </div>
 
     </section>

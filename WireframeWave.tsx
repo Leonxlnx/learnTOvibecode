@@ -1,6 +1,7 @@
 
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
+import { Sphere, MeshDistortMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
 const WireframeWave = () => {
@@ -9,35 +10,35 @@ const WireframeWave = () => {
   useFrame((state) => {
     if (!meshRef.current) return;
     const time = state.clock.getElapsedTime();
-    
-    // Gentle undulation logic
-    const positionAttribute = meshRef.current.geometry.attributes.position;
-    for (let i = 0; i < positionAttribute.count; i++) {
-      const x = positionAttribute.getX(i);
-      const y = positionAttribute.getY(i);
-      
-      // Calculate wave
-      const z = Math.sin(x * 0.4 + time * 0.6) * Math.cos(y * 0.3 + time * 0.4) * 0.8;
-      
-      positionAttribute.setZ(i, z);
-    }
-    positionAttribute.needsUpdate = true;
-    
-    // Slow rotation
-    meshRef.current.rotation.z = time * 0.02;
+    // Complex organic rotation
+    meshRef.current.rotation.x = time * 0.1;
+    meshRef.current.rotation.y = time * 0.15;
   });
 
   return (
-    <mesh ref={meshRef} rotation={[-Math.PI / 2.2, 0, 0]} position={[0, 0, -1]}>
-      <planeGeometry args={[20, 20, 40, 40]} />
-      <meshBasicMaterial 
-        color="#888888" 
-        wireframe 
-        transparent 
-        opacity={0.25} 
-        side={THREE.DoubleSide}
-      />
-    </mesh>
+    <>
+      <ambientLight intensity={0.2} />
+      <pointLight position={[10, 10, 10]} intensity={0.5} color="#555" />
+      <pointLight position={[-10, -10, -10]} intensity={0.5} color="#222" />
+      
+      <Sphere args={[1, 128, 128]} scale={2.2} ref={meshRef}>
+        <MeshDistortMaterial
+          color="#1a1a1a"
+          attach="material"
+          distort={0.6} // Heavy distortion
+          speed={1.5} // Fast movement
+          roughness={0.2}
+          metalness={0.8}
+          wireframe={true} // Tech look
+          emissive="#000000"
+        />
+      </Sphere>
+      
+      {/* Secondary inner core for depth */}
+      <Sphere args={[1, 64, 64]} scale={1.2}>
+         <meshBasicMaterial color="#333" wireframe transparent opacity={0.05} />
+      </Sphere>
+    </>
   );
 };
 
