@@ -17,24 +17,24 @@ const WireframeWave = () => {
       const y = positionAttribute.getY(i);
       
       // Calculate wave
-      const z = Math.sin(x * 0.5 + time * 0.5) * Math.cos(y * 0.5 + time * 0.3) * 0.5;
+      const z = Math.sin(x * 0.4 + time * 0.6) * Math.cos(y * 0.3 + time * 0.4) * 0.8;
       
       positionAttribute.setZ(i, z);
     }
     positionAttribute.needsUpdate = true;
     
     // Slow rotation
-    meshRef.current.rotation.z = time * 0.05;
+    meshRef.current.rotation.z = time * 0.02;
   });
 
   return (
-    <mesh ref={meshRef} rotation={[-Math.PI / 2.5, 0, 0]} position={[0, 0, -2]}>
-      <planeGeometry args={[15, 15, 32, 32]} />
+    <mesh ref={meshRef} rotation={[-Math.PI / 2.2, 0, 0]} position={[0, 0, -1]}>
+      <planeGeometry args={[20, 20, 40, 40]} />
       <meshBasicMaterial 
-        color="#333" 
+        color="#888888" 
         wireframe 
         transparent 
-        opacity={0.15} 
+        opacity={0.25} 
         side={THREE.DoubleSide}
       />
     </mesh>
