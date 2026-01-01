@@ -10,137 +10,134 @@ const ContentSection = () => {
     offset: ["start end", "end start"]
   });
 
-  // Parallax speeds for images
-  const yLeft = useTransform(scrollYProgress, [0, 1], [100, -150]);
-  const yCenter = useTransform(scrollYProgress, [0, 1], [300, -300]); // Moves fastest
-  const yRight = useTransform(scrollYProgress, [0, 1], [150, -100]);
-
-  // Text movement
-  const textY = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  // Parallax visual effect for the stacked images
+  const yParallax = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  
+  // Split tools list for the marquee rails
+  const tools1 = AI_TOOLS.slice(0, 6);
+  const tools2 = AI_TOOLS.slice(6, 12);
+  const tools3 = AI_TOOLS.slice(12, AI_TOOLS.length);
 
   return (
-    <section ref={containerRef} className="relative w-full min-h-[150vh] bg-[#050505] overflow-hidden flex flex-col items-center py-20 border-t border-white/5">
+    <section ref={containerRef} className="relative w-full bg-[#050505] py-32 flex flex-col items-center overflow-hidden border-t border-white/5">
       
-      {/* Background Grids */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
-
-      {/* Header Text */}
-      <div className="relative z-20 text-center mb-20 px-6">
+      {/* Intro */}
+      <div className="text-center mb-32 z-20 px-4">
         <motion.h2 
-          style={{ y: textY }}
-          className="text-5xl md:text-7xl lg:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-800 tracking-tighter"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-6xl md:text-9xl font-black text-white tracking-tighter uppercase"
         >
-          TOOL AGNOSTIC
+          Tool Agnostic
         </motion.h2>
+        <motion.div 
+          initial={{ width: 0 }}
+          whileInView={{ width: "100px" }}
+          transition={{ delay: 0.5, duration: 1 }}
+          className="h-1 bg-accent mx-auto mt-6"
+        />
         <motion.p 
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          className="mt-6 text-gray-400 font-mono text-sm tracking-widest uppercase"
+          transition={{ delay: 0.8 }}
+          className="mt-8 text-gray-400 font-mono text-sm tracking-widest uppercase"
         >
           We got you covered. No matter the model.
         </motion.p>
       </div>
 
-      {/* Main Content Grid */}
-      <div className="w-full max-w-[90vw] h-[80vh] relative flex justify-center items-center perspective-[1000px]">
+      <div className="w-full max-w-[95vw] md:max-w-[85vw] flex flex-col gap-0 relative">
         
-        {/* Floating Tool Keywords - Background Layer */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-             {AI_TOOLS.map((tool, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute text-white/10 font-black uppercase text-4xl md:text-6xl whitespace-nowrap"
-                  style={{
-                    left: `${Math.random() * 90}%`,
-                    top: `${Math.random() * 100}%`,
-                    rotate: Math.random() * 20 - 10,
-                  }}
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: [0.05, 0.2, 0.05], x: [0, Math.random() * 100 - 50] }}
-                  transition={{ 
-                    duration: Math.random() * 5 + 5, 
-                    repeat: Infinity, 
-                    ease: "easeInOut" 
-                  }}
-                >
-                  {tool}
-                </motion.div>
-             ))}
-        </div>
+        {/* --- STACK ITEM 1 --- */}
+        <div className="relative group perspective-[1000px]">
+          {/* Marquee Rail Behind */}
+          <div className="absolute top-1/2 left-0 w-full -translate-y-1/2 -z-10 opacity-30 group-hover:opacity-50 transition-opacity duration-700">
+             <Marquee direction="left" speed={20} items={tools1} />
+          </div>
 
-        {/* Images Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 w-full max-w-7xl z-10 px-4">
-          
-          {/* Image 1 */}
-          <motion.div style={{ y: yLeft }} className="relative aspect-[3/4] md:translate-y-12">
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />
+          <motion.div style={{ y: useTransform(scrollYProgress, [0, 1], [50, -50]) }} className="relative z-10 w-full aspect-[4/1] md:aspect-[5/1] overflow-hidden rounded-sm border border-white/10 bg-[#0a0a0a]">
             <img 
               src={SHOWCASE_IMAGES.left} 
-              alt="AI Workflow 1" 
-              className="w-full h-full object-cover rounded-sm grayscale hover:grayscale-0 transition-all duration-700 opacity-80 hover:opacity-100"
+              alt="Visual 1" 
+              className="w-full h-full object-cover opacity-80 group-hover:scale-105 group-hover:opacity-100 transition-all duration-1000 ease-out"
             />
-            <div className="absolute bottom-4 left-4 z-20">
-              <span className="text-xs font-mono border border-white/30 px-2 py-1 rounded-full bg-black/50 backdrop-blur-md">
-                GENERATIVE
-              </span>
-            </div>
+             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
           </motion.div>
+        </div>
 
-          {/* Image 2 (Center - Featured) */}
-          <motion.div style={{ y: yCenter }} className="relative aspect-[3/4] z-20 md:-translate-y-20 shadow-2xl shadow-purple-900/10">
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black z-10" />
-             <img 
+        {/* Spacer / Connector */}
+        <div className="h-24 md:h-32 w-px bg-white/10 mx-auto relative overflow-hidden">
+             <motion.div style={{ top: useTransform(scrollYProgress, [0, 1], ["0%", "100%"]) }} className="absolute w-full h-1/2 bg-accent blur-[2px]" />
+        </div>
+
+        {/* --- STACK ITEM 2 --- */}
+        <div className="relative group perspective-[1000px]">
+           {/* Marquee Rail Behind */}
+           <div className="absolute top-1/2 left-0 w-full -translate-y-1/2 -z-10 opacity-30 group-hover:opacity-50 transition-opacity duration-700">
+             <Marquee direction="right" speed={25} items={tools2} />
+          </div>
+
+          <motion.div style={{ y: useTransform(scrollYProgress, [0, 1], [100, -100]) }} className="relative z-10 w-full aspect-[4/1] md:aspect-[5/1] overflow-hidden rounded-sm border border-white/10 bg-[#0a0a0a] shadow-2xl shadow-purple-900/5">
+            <img 
               src={SHOWCASE_IMAGES.center} 
-              alt="AI Workflow 2" 
-              className="w-full h-full object-cover rounded-sm border border-white/10"
+              alt="Visual 2" 
+              className="w-full h-full object-cover opacity-90 group-hover:scale-105 group-hover:opacity-100 transition-all duration-1000 ease-out"
             />
-             <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full text-center z-20 px-4">
-              <p className="text-xs font-mono mb-2 text-accent">THE CORE</p>
-              <div className="flex flex-wrap justify-center gap-2">
-                {AI_TOOLS.slice(0, 4).map(t => (
-                   <span key={t} className="text-[10px] uppercase bg-white/10 backdrop-blur px-2 py-0.5 rounded text-white/80">
-                     {t}
-                   </span>
-                ))}
-              </div>
-            </div>
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/90 pointer-events-none" />
           </motion.div>
+        </div>
 
-          {/* Image 3 */}
-          <motion.div style={{ y: yRight }} className="relative aspect-[3/4] md:translate-y-24">
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />
+        {/* Spacer / Connector */}
+        <div className="h-24 md:h-32 w-px bg-white/10 mx-auto relative overflow-hidden">
+            <motion.div style={{ top: useTransform(scrollYProgress, [0, 1], ["-20%", "120%"]) }} className="absolute w-full h-1/2 bg-accent blur-[2px]" />
+        </div>
+
+        {/* --- STACK ITEM 3 --- */}
+        <div className="relative group perspective-[1000px]">
+           {/* Marquee Rail Behind */}
+           <div className="absolute top-1/2 left-0 w-full -translate-y-1/2 -z-10 opacity-30 group-hover:opacity-50 transition-opacity duration-700">
+             <Marquee direction="left" speed={15} items={tools3} />
+          </div>
+
+          <motion.div style={{ y: useTransform(scrollYProgress, [0, 1], [150, -150]) }} className="relative z-10 w-full aspect-[4/1] md:aspect-[5/1] overflow-hidden rounded-sm border border-white/10 bg-[#0a0a0a]">
             <img 
               src={SHOWCASE_IMAGES.right} 
-              alt="AI Workflow 3" 
-              className="w-full h-full object-cover rounded-sm grayscale hover:grayscale-0 transition-all duration-700 opacity-80 hover:opacity-100"
+              alt="Visual 3" 
+              className="w-full h-full object-cover opacity-80 group-hover:scale-105 group-hover:opacity-100 transition-all duration-1000 ease-out"
             />
-            <div className="absolute top-4 right-4 z-20">
-              <span className="text-xs font-mono border border-white/30 px-2 py-1 rounded-full bg-black/50 backdrop-blur-md">
-                ASSISTED
-              </span>
-            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
           </motion.div>
-
         </div>
-      </div>
-      
-      {/* Infinite Marquee at bottom */}
-      <div className="absolute bottom-12 w-full overflow-hidden whitespace-nowrap py-4 border-y border-white/5 bg-black/50 backdrop-blur-sm z-30">
-        <motion.div 
-          animate={{ x: [0, -1000] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="flex items-center gap-12"
-        >
-          {[...AI_TOOLS, ...AI_TOOLS, ...AI_TOOLS].map((tool, i) => (
-            <span key={i} className="text-lg font-serif italic text-white/40">
-              {tool} <span className="font-sans font-bold text-accent mx-2">.</span>
-            </span>
-          ))}
-        </motion.div>
-      </div>
 
+      </div>
     </section>
   );
 };
+
+// Reusable Marquee Component for the "Rails"
+const Marquee = ({ items, direction = "left", speed = 20 }: { items: string[], direction?: "left" | "right", speed?: number }) => {
+  return (
+    <div className="flex overflow-hidden whitespace-nowrap select-none mask-image-gradient">
+      <motion.div 
+        initial={{ x: direction === "left" ? 0 : "-50%" }}
+        animate={{ x: direction === "left" ? "-50%" : 0 }}
+        transition={{ duration: speed, repeat: Infinity, ease: "linear" }}
+        className="flex gap-12 md:gap-32 items-center"
+      >
+        {[...items, ...items, ...items, ...items].map((item, i) => (
+          <span key={i} className="text-4xl md:text-8xl font-black text-transparent stroke-text opacity-20 hover:opacity-100 hover:text-white transition-all duration-300 cursor-default">
+            {item}
+          </span>
+        ))}
+      </motion.div>
+      <style>{`
+        .stroke-text {
+          -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+        }
+      `}</style>
+    </div>
+  )
+}
 
 export default ContentSection;
