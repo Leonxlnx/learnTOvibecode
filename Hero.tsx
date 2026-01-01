@@ -9,7 +9,6 @@ declare global {
   namespace JSX {
     interface IntrinsicElements {
       ambientLight: any;
-      [elemName: string]: any;
     }
   }
 }

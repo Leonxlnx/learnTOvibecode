@@ -9,7 +9,6 @@ declare global {
     interface IntrinsicElements {
       mesh: any;
       sphereGeometry: any;
-      [elemName: string]: any;
     }
   }
 }

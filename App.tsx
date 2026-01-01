@@ -1,5 +1,7 @@
+
 import React from 'react';
 import Hero from './Hero';
+import ProblemSection from './ProblemSection';
 import ContentSection from './ContentSection';
 
 // Global types for Three.js in Fiber
@@ -15,6 +17,7 @@ const App = () => {
   return (
     <main className="bg-[#050505] text-primary selection:bg-white selection:text-black antialiased">
       <Hero />
+      <ProblemSection />
       <ContentSection />
     </main>
   );
