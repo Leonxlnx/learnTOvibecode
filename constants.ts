@@ -11,6 +11,7 @@ export const SHOWCASE_IMAGES = {
 export const AI_TOOLS = [
   "Gemini", "Claude Code", "Codex", "Antigravity", 
   "Lovable", "bolt.new", "replit", "v0.dev", 
-  "copilot", "grok", "deepseek", "z.ai", 
-  "kimi", "qwen", "base44", "windsurf", "cursor"
+  "Copilot", "Grok", "Deepseek", "Z.ai", 
+  "Kimi", "Qwen", "Base44", "Windsurf", "Cursor",
+  "ChatGPT", "Midjourney", "Sora", "Runway"
 ];
