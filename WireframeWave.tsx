@@ -10,33 +10,38 @@ const WireframeWave = () => {
   useFrame((state) => {
     if (!meshRef.current) return;
     const time = state.clock.getElapsedTime();
-    // Complex organic rotation
-    meshRef.current.rotation.x = time * 0.1;
-    meshRef.current.rotation.y = time * 0.15;
+    meshRef.current.rotation.x = time * 0.2;
+    meshRef.current.rotation.y = time * 0.3;
   });
 
   return (
     <>
-      <ambientLight intensity={0.2} />
-      <pointLight position={[10, 10, 10]} intensity={0.5} color="#555" />
-      <pointLight position={[-10, -10, -10]} intensity={0.5} color="#222" />
+      <ambientLight intensity={2} />
+      <pointLight position={[10, 10, 10]} intensity={3} color="#fff" />
+      <pointLight position={[-10, -10, -10]} intensity={3} color="#00ffff" />
       
-      <Sphere args={[1, 128, 128]} scale={2.2} ref={meshRef}>
+      <Sphere args={[1, 128, 128]} scale={2.5} ref={meshRef}>
         <MeshDistortMaterial
-          color="#1a1a1a"
+          color="#ffffff"
           attach="material"
-          distort={0.6} // Heavy distortion
-          speed={1.5} // Fast movement
-          roughness={0.2}
-          metalness={0.8}
-          wireframe={true} // Tech look
-          emissive="#000000"
+          distort={0.5} 
+          speed={2} 
+          roughness={0}
+          metalness={0.1}
+          wireframe={true}
+          emissive="#444444"
+          emissiveIntensity={0.5}
         />
       </Sphere>
       
-      {/* Secondary inner core for depth */}
-      <Sphere args={[1, 64, 64]} scale={1.2}>
-         <meshBasicMaterial color="#333" wireframe transparent opacity={0.05} />
+      {/* Inner Core for glow */}
+       <Sphere args={[1, 32, 32]} scale={1.8}>
+        <meshBasicMaterial
+          color="#00ffff"
+          wireframe={true}
+          transparent={true}
+          opacity={0.1}
+        />
       </Sphere>
     </>
   );
