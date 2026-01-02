@@ -15,7 +15,9 @@
     "@react-three/fiber": "^9.4.2",
     "@react-three/drei": "^10.7.7",
     "three": "^0.182.0",
-    "lucide-react": "^0.562.0"
+    "lucide-react": "^0.562.0",
+    "gsap": "3.12.5",
+    "react-icons": "^5.5.0"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",

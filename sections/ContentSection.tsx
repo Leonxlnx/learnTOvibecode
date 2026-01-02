@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { SHOWCASE_IMAGES, AI_TOOLS } from './constants';
+import { SHOWCASE_IMAGES, AI_TOOLS } from '../utils/constants';
 
 const ContentSection = () => {
   return (

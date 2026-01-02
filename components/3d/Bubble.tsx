@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { Float, MeshDistortMaterial, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
-import { IMG_URL } from './constants';
+import { IMG_URL } from '../../utils/constants';
 
 // Fix for TypeScript not recognizing R3F elements in this file scope
 declare global {

@@ -3,7 +3,7 @@ import React, { Suspense } from 'react';
 import { motion, Variants } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
-import Bubble from './Bubble';
+import Bubble from '../components/3d/Bubble';
 
 // Fix for TypeScript not recognizing R3F elements in this file scope
 declare global {
