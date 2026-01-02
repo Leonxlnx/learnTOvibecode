@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GoArrowUpRight, GoChevronDown, GoHome, GoPerson, GoBriefcase, GoMail } from 'react-icons/go';
-import { Menu, X, Sparkles, Box, Layers, Zap } from 'lucide-react';
+import { GoArrowUpRight, GoChevronDown } from 'react-icons/go';
+import { Menu, X, Sparkles } from 'lucide-react';
 
 // --- Types ---
 interface Link {
@@ -44,10 +44,10 @@ const CardNav: React.FC<CardNavProps> = ({
     <>
       {/* --- DESKTOP NAV --- */}
       <motion.nav 
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
+        initial={{ y: -100, x: "-50%", opacity: 0 }}
+        animate={{ y: 0, x: "-50%", opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="fixed top-6 left-1/2 -translate-x-1/2 z-50 hidden md:flex items-center gap-1 p-1.5 pl-6 pr-1.5 rounded-full border border-white/10 bg-[#050505]/60 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
+        className="fixed top-6 left-1/2 z-50 hidden md:flex items-center gap-1 p-1.5 pl-6 pr-1.5 rounded-full border border-white/10 bg-[#050505]/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
       >
         {/* Logo */}
         <div className="flex items-center gap-2 mr-6 cursor-pointer group select-none">
@@ -89,21 +89,24 @@ const CardNav: React.FC<CardNavProps> = ({
               <AnimatePresence>
                 {activeIndices === index && (
                   <motion.div
-                    initial={{ opacity: 0, y: 15, scale: 0.9, filter: "blur(10px)" }}
-                    animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-                    exit={{ opacity: 0, y: 10, scale: 0.95, filter: "blur(8px)", transition: { duration: 0.15 } }}
+                    initial={{ opacity: 0, y: 15, x: "-50%", scale: 0.9, filter: "blur(10px)" }}
+                    animate={{ opacity: 1, y: 0, x: "-50%", scale: 1, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, y: 10, x: "-50%", scale: 0.95, filter: "blur(8px)", transition: { duration: 0.15 } }}
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[400px] p-2 rounded-3xl border border-white/10 bg-[#0a0a0a]/95 backdrop-blur-2xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.8)] overflow-hidden"
+                    className="absolute top-full left-1/2 mt-3 w-[400px] p-2 rounded-3xl border border-white/10 bg-[#0a0a0a]/95 backdrop-blur-2xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.8)] overflow-hidden"
                   >
+                     {/* Glossy Overlay */}
+                     <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
+
                      {/* Inner Grid */}
-                     <div className="grid grid-cols-2 gap-2">
+                     <div className="grid grid-cols-2 gap-2 relative z-10">
                         {item.links.map((link, i) => (
                             <a 
                                 key={i} 
                                 href={link.href || '#'}
                                 className={`
                                     relative group overflow-hidden rounded-xl border border-white/5 p-4 flex flex-col justify-between
-                                    transition-all duration-300 hover:border-white/20
+                                    transition-all duration-300 hover:border-white/20 hover:shadow-lg
                                     ${link.span || 'col-span-1'}
                                     ${link.span === 'col-span-2' ? 'h-24' : 'h-32'}
                                 `}

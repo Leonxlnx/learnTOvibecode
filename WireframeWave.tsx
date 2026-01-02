@@ -3,16 +3,6 @@ import { useFrame } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      ambientLight: any;
-      mesh: any;
-      sphereGeometry: any;
-    }
-  }
-}
-
 const WireframeWave = () => {
   const ref = useRef<THREE.Points>(null);
   
@@ -42,6 +32,7 @@ const WireframeWave = () => {
 
   return (
     <>
+      {/* @ts-ignore */}
       <ambientLight intensity={2} />
       <Points ref={ref} positions={particles} stride={3} frustumCulled={false}>
         <PointMaterial

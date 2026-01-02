@@ -4,17 +4,6 @@ import { Canvas } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
 import Bubble from '../components/3d/Bubble';
 
-// Fix for TypeScript not recognizing R3F elements in this file scope
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      ambientLight: any;
-      mesh: any;
-      sphereGeometry: any;
-    }
-  }
-}
-
 const Hero = () => {
   // Explicitly typing Variants to ensure nested transition properties are correctly validated
   const containerVars: Variants = {
@@ -56,6 +45,7 @@ const Hero = () => {
           <Suspense fallback={null}>
             <Bubble />
             <Environment preset="night" />
+            {/* @ts-ignore */}
             <ambientLight intensity={0.5} />
           </Suspense>
         </Canvas>
