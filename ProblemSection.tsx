@@ -3,7 +3,7 @@ import React, { useRef, Suspense } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
 import WireframeWave from './WireframeWave';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 const ProblemSection = () => {
   const containerRef = useRef(null);
@@ -12,24 +12,26 @@ const ProblemSection = () => {
     offset: ["start start", "end end"]
   });
 
-  const smoothProgress = useSpring(scrollYProgress, { damping: 20, stiffness: 80 });
+  const smoothProgress = useSpring(scrollYProgress, { damping: 20, stiffness: 70 });
   
-  // Animation Sequence
-  const opacity1 = useTransform(smoothProgress, [0.05, 0.2, 0.25], [0, 1, 0]);
-  const y1 = useTransform(smoothProgress, [0.05, 0.25], [50, -50]);
+  // SLOWED DOWN ANIMATIONS (Wider Ranges)
+  // Text 1: Purple Gradient
+  const opacity1 = useTransform(smoothProgress, [0.05, 0.25, 0.3], [0, 1, 0]);
+  const y1 = useTransform(smoothProgress, [0.05, 0.3], [100, -100]);
 
-  const opacity2 = useTransform(smoothProgress, [0.3, 0.45, 0.5], [0, 1, 0]);
-  // Move y2 randomly to enhance "wrong alignment"
-  const y2 = useTransform(smoothProgress, [0.3, 0.5], [20, 100]); 
-
-  const opacity3 = useTransform(smoothProgress, [0.55, 0.7, 0.75], [0, 1, 0]);
-  const y3 = useTransform(smoothProgress, [0.55, 0.75], [50, -50]);
+  // Text 2: Wrong Alignment (Appears later, stays longer)
+  const opacity2 = useTransform(smoothProgress, [0.35, 0.5, 0.55], [0, 1, 0]);
+  const y2 = useTransform(smoothProgress, [0.35, 0.55], [100, 0]); 
+  // Text 3: Too Generic
+  const opacity3 = useTransform(smoothProgress, [0.6, 0.75, 0.8], [0, 1, 0]);
+  const y3 = useTransform(smoothProgress, [0.6, 0.8], [50, -50]);
   
-  const opacityFinal = useTransform(smoothProgress, [0.8, 0.9], [0, 1]);
-  const scaleFinal = useTransform(smoothProgress, [0.8, 1], [0.9, 1]);
+  // Final Card Reveal
+  const opacityFinal = useTransform(smoothProgress, [0.85, 0.95], [0, 1]);
+  const scaleFinal = useTransform(smoothProgress, [0.85, 1], [0.9, 1]);
 
   return (
-    <section ref={containerRef} className="relative w-full h-[400vh] bg-[#050505] z-10">
+    <section ref={containerRef} className="relative w-full h-[450vh] bg-[#050505] z-10">
       
       {/* --- STICKY BACKGROUND --- */}
       <div className="sticky top-0 h-screen w-full overflow-hidden">
@@ -48,56 +50,54 @@ const ProblemSection = () => {
           
           {/* QUESTION 1: ACTUAL PURPLE GRADIENT */}
           <motion.div style={{ opacity: opacity1, y: y1 }} className="absolute text-center">
-             <h2 className="text-6xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#7c3aed] via-[#d946ef] to-[#c026d3] uppercase tracking-tighter drop-shadow-2xl">
+             <h2 className="text-6xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-br from-[#6d28d9] via-[#d946ef] to-[#4c1d95] uppercase tracking-tighter drop-shadow-[0_0_30px_rgba(168,85,247,0.5)]">
                 Purple Gradient?
              </h2>
           </motion.div>
 
-          {/* QUESTION 2: WRONG ALIGNMENT (Rotated, off-center) */}
+          {/* QUESTION 2: WRONG ALIGNMENT (Extreme skew/rotate) */}
           <motion.div 
             style={{ opacity: opacity2, y: y2 }} 
-            className="absolute left-10 md:left-[20%] rotate-12"
+            className="absolute right-0 md:right-[15%] top-[20%] rotate-[-5deg]"
           >
-             <h2 className="text-5xl md:text-8xl font-serif italic text-white/90 translate-x-12 skew-y-6">
+             <h2 className="text-6xl md:text-[8rem] font-serif italic text-white/90 translate-x-12 skew-x-12 origin-bottom-right">
                 Wrong Alignment?
              </h2>
           </motion.div>
 
-          {/* QUESTION 3: TOO GENERIC (Standard Inter font, boring grey) */}
+          {/* QUESTION 3: TOO GENERIC (Boring, Standard, Grey) */}
           <motion.div style={{ opacity: opacity3, y: y3 }} className="absolute text-center">
-             <h2 className="text-6xl md:text-8xl font-sans font-normal text-[#666666] tracking-normal">
+             <h2 className="text-6xl md:text-8xl font-[Arial,sans-serif] font-normal text-[#555] tracking-tight">
                 Too Generic?
              </h2>
           </motion.div>
 
-          {/* FINAL PITCH - PREMIUM LIQUID GLASS */}
-          <motion.div style={{ opacity: opacityFinal, scale: scaleFinal }} className="absolute text-center max-w-3xl w-full pointer-events-auto px-4">
+          {/* FINAL PITCH - PREMIUM LIQUID METAL GLASS */}
+          <motion.div style={{ opacity: opacityFinal, scale: scaleFinal }} className="absolute text-center max-w-4xl w-full pointer-events-auto px-4">
               
-              <div className="group relative rounded-[2.5rem] bg-black/40 backdrop-blur-2xl border border-white/10 overflow-hidden shadow-2xl transition-all duration-500 hover:shadow-[0_0_80px_-20px_rgba(255,255,255,0.15)]">
+              <div className="group relative rounded-[2rem] bg-black/60 backdrop-blur-3xl transition-all duration-700">
                 
-                {/* Liquid Metal Border Effect */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                    <div className="absolute inset-[-50%] bg-[conic-gradient(from_0deg,transparent_0_340deg,white_360deg)] animate-[spin_4s_linear_infinite] opacity-30" />
-                </div>
-                
+                {/* LIQUID METAL BORDER */}
+                {/* This creates a moving gradient border that looks like flowing mercury */}
+                <div className="absolute -inset-[1px] rounded-[2rem] bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-50 group-hover:opacity-100 blur-sm transition-all duration-500" />
+                <div className="absolute -inset-[1px] rounded-[2rem] bg-[conic-gradient(from_0deg,transparent_0_300deg,white_360deg)] animate-[spin_4s_linear_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ maskImage: 'linear-gradient(black, black), linear-gradient(black, black)', maskClip: 'content-box, border-box', maskComposite: 'exclude', padding: '1px' }} />
+
                 {/* Inner Content Layer */}
-                <div className="relative z-10 p-12 md:p-20 bg-[#0a0a0a]/80 m-[1px] rounded-[2.4rem]">
-                    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                <div className="relative z-10 p-12 md:p-24 bg-[#080808]/90 rounded-[2rem] border border-white/5 shadow-2xl">
                     
-                    <h3 className="text-2xl md:text-4xl text-white font-medium leading-relaxed mb-12 tracking-tight">
+                    <h3 className="text-3xl md:text-5xl text-white font-medium leading-tight mb-16 tracking-tight">
                       This free course is perfect for you if you are new, if you have experience, or if you just want to refresh and get better.
                     </h3>
                     
-                    <button className="relative inline-flex items-center justify-center px-10 py-5 bg-white text-black text-lg font-bold uppercase tracking-widest rounded-full overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.4)]">
-                       <span className="relative z-10 flex items-center gap-3">
+                    <button className="relative inline-flex items-center justify-center px-12 py-6 bg-white text-black text-lg font-bold uppercase tracking-widest rounded-full overflow-hidden transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_50px_rgba(255,255,255,0.3)]">
+                       <span className="relative z-10 flex items-center gap-4">
                          Visit
-                         <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                         <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform duration-300" />
                        </span>
-                       <div className="absolute inset-0 bg-gradient-to-r from-gray-100 via-white to-gray-100 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out" />
+                       {/* Liquid Fill Effect on Hover */}
+                       <div className="absolute inset-0 bg-gray-200 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.83,0,0.17,1)]" />
                     </button>
                     
-                    {/* Decorative Sparkle */}
-                    <Sparkles className="absolute top-8 right-8 text-white/20 w-8 h-8 group-hover:text-white/60 group-hover:rotate-180 transition-all duration-700" />
                 </div>
               </div>
 
