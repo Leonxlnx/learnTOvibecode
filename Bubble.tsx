@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { Float, MeshDistortMaterial, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
@@ -10,6 +9,7 @@ declare global {
     interface IntrinsicElements {
       mesh: any;
       sphereGeometry: any;
+      ambientLight: any;
     }
   }
 }

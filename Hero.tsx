@@ -1,4 +1,3 @@
-
 import React, { Suspense } from 'react';
 import { motion, Variants } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
@@ -10,6 +9,8 @@ declare global {
   namespace JSX {
     interface IntrinsicElements {
       ambientLight: any;
+      mesh: any;
+      sphereGeometry: any;
     }
   }
 }

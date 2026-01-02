@@ -1,29 +1,29 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GoArrowUpRight, GoChevronDown } from 'react-icons/go';
-import { Menu, X } from 'lucide-react';
+import { GoArrowUpRight, GoChevronDown, GoHome, GoPerson, GoBriefcase, GoMail } from 'react-icons/go';
+import { Menu, X, Sparkles, Box, Layers, Zap } from 'lucide-react';
 
 // --- Types ---
 interface Link {
   label: string;
-  ariaLabel?: string;
   href?: string;
-  description?: string; // Added for richer dropdowns
+  description?: string;
+  icon?: React.ReactNode;
+  span?: string; // 'col-span-1' | 'col-span-2'
+  color?: string; // specific gradient or color for the bento card
 }
 
 interface Item {
   label: string;
   links: Link[];
-  bgColor?: string; // Optional override
-  textColor?: string;
 }
 
 interface CardNavProps {
   logo?: string;
   logoAlt?: string;
   items: Item[];
-  baseColor?: string; // Unused but kept for prop compat
+  baseColor?: string;
   menuColor?: string;
   buttonBgColor?: string;
   buttonTextColor?: string;
@@ -47,21 +47,24 @@ const CardNav: React.FC<CardNavProps> = ({
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="fixed top-6 left-1/2 -translate-x-1/2 z-50 hidden md:flex items-center gap-2 p-2 pl-6 pr-2 rounded-full border border-white/10 bg-[#050505]/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
+        className="fixed top-6 left-1/2 -translate-x-1/2 z-50 hidden md:flex items-center gap-1 p-1.5 pl-6 pr-1.5 rounded-full border border-white/10 bg-[#050505]/60 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
       >
         {/* Logo */}
-        <div className="flex items-center gap-2 mr-8 cursor-pointer group">
+        <div className="flex items-center gap-2 mr-6 cursor-pointer group select-none">
            {logo ? (
              <img src={logo} alt={logoAlt} className="h-6 w-auto" />
            ) : (
              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-white group-hover:scale-125 transition-transform duration-300" />
-                <span className="font-bold tracking-tight text-white text-sm">VIBECODE</span>
+                <div className="relative w-3 h-3 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-white rounded-full opacity-20 group-hover:scale-150 transition-transform duration-500" />
+                    <div className="w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.8)]" />
+                </div>
+                <span className="font-bold tracking-tight text-white text-sm uppercase">Learn2Vibecode</span>
              </div>
            )}
         </div>
 
-        {/* Links with Individual Dropdowns */}
+        {/* Links with Bento Dropdowns */}
         <ul className="flex items-center gap-1">
           {items.map((item, index) => (
             <li 
@@ -72,41 +75,62 @@ const CardNav: React.FC<CardNavProps> = ({
             >
               <button 
                 className={`
-                  relative px-4 py-2 text-sm font-medium transition-colors duration-300 rounded-full flex items-center gap-1
-                  ${activeIndices === index ? 'text-white bg-white/10' : 'text-gray-400 hover:text-white'}
+                  relative px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all duration-300 rounded-full flex items-center gap-1.5
+                  ${activeIndices === index ? 'text-black bg-white shadow-[0_0_20px_rgba(255,255,255,0.3)]' : 'text-gray-400 hover:text-white'}
                 `}
               >
                 {item.label}
                 <motion.span animate={{ rotate: activeIndices === index ? 180 : 0 }}>
-                    <GoChevronDown size={12} />
+                    <GoChevronDown size={10} />
                 </motion.span>
               </button>
 
-              {/* The "Klappfenster" (Dropdown Window) */}
+              {/* The "Bento" Dropdown Window */}
               <AnimatePresence>
                 {activeIndices === index && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10, scale: 0.95, filter: "blur(10px)" }}
+                    initial={{ opacity: 0, y: 15, scale: 0.9, filter: "blur(10px)" }}
                     animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-                    exit={{ opacity: 0, y: 5, scale: 0.98, filter: "blur(5px)", transition: { duration: 0.2 } }}
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-64 p-2 rounded-2xl border border-white/10 bg-[#0a0a0a] shadow-2xl overflow-hidden"
+                    exit={{ opacity: 0, y: 10, scale: 0.95, filter: "blur(8px)", transition: { duration: 0.15 } }}
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[400px] p-2 rounded-3xl border border-white/10 bg-[#0a0a0a]/95 backdrop-blur-2xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.8)] overflow-hidden"
                   >
-                     {/* Glossy shine effect */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
+                     {/* Inner Grid */}
+                     <div className="grid grid-cols-2 gap-2">
+                        {item.links.map((link, i) => (
+                            <a 
+                                key={i} 
+                                href={link.href || '#'}
+                                className={`
+                                    relative group overflow-hidden rounded-xl border border-white/5 p-4 flex flex-col justify-between
+                                    transition-all duration-300 hover:border-white/20
+                                    ${link.span || 'col-span-1'}
+                                    ${link.span === 'col-span-2' ? 'h-24' : 'h-32'}
+                                `}
+                            >
+                                {/* Hover Gradient Background */}
+                                <div className={`absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-gradient-to-br ${link.color || 'from-white to-gray-500'}`} />
+                                
+                                {/* Icon & Arrow */}
+                                <div className="flex justify-between items-start z-10">
+                                    <div className="text-white/50 group-hover:text-white transition-colors duration-300">
+                                        {link.icon || <Sparkles size={16} />}
+                                    </div>
+                                    <GoArrowUpRight className="text-white/20 group-hover:text-white transition-colors duration-300" size={12} />
+                                </div>
 
-                    <div className="relative flex flex-col gap-1">
-                      {item.links.map((link, i) => (
-                        <a 
-                          key={i} 
-                          href={link.href || '#'}
-                          className="group flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors duration-200"
-                        >
-                          <span className="text-sm text-gray-300 group-hover:text-white transition-colors">{link.label}</span>
-                          <GoArrowUpRight className="text-gray-600 group-hover:text-white transition-colors" size={14} />
-                        </a>
-                      ))}
-                    </div>
+                                {/* Text Content */}
+                                <div className="z-10 mt-auto">
+                                    <div className="text-sm font-bold text-white mb-0.5">{link.label}</div>
+                                    {link.description && (
+                                        <div className="text-[10px] text-gray-500 font-medium leading-tight group-hover:text-gray-300 transition-colors">
+                                            {link.description}
+                                        </div>
+                                    )}
+                                </div>
+                            </a>
+                        ))}
+                     </div>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -115,16 +139,17 @@ const CardNav: React.FC<CardNavProps> = ({
         </ul>
 
         {/* CTA */}
-        <div className="ml-8 pl-4 border-l border-white/10">
-           <button className="px-5 py-2 rounded-full bg-white text-black text-xs font-bold uppercase tracking-wider hover:bg-gray-200 transition-colors">
-              Start
+        <div className="ml-6 pl-2">
+           <button className="relative overflow-hidden px-6 py-2.5 rounded-full bg-[#111] text-white text-[10px] font-bold uppercase tracking-widest border border-white/10 hover:border-white/30 transition-all active:scale-95 group">
+              <span className="relative z-10">Start Learning</span>
+              <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
            </button>
         </div>
       </motion.nav>
 
-      {/* --- MOBILE NAV (Hamburger) --- */}
-      <div className="md:hidden fixed top-4 left-4 right-4 z-50 flex justify-between items-center p-4 rounded-full border border-white/10 bg-[#050505]/80 backdrop-blur-xl">
-         <span className="font-bold text-white text-sm ml-2">VIBECODE</span>
+      {/* --- MOBILE NAV --- */}
+      <div className="md:hidden fixed top-4 left-4 right-4 z-50 flex justify-between items-center p-3 px-5 rounded-full border border-white/10 bg-[#050505]/80 backdrop-blur-xl shadow-lg">
+         <span className="font-bold text-white text-sm tracking-tight uppercase">Learn2Vibecode</span>
          <button 
            onClick={() => setIsMobileMenuOpen(true)}
            className="p-2 text-white hover:bg-white/10 rounded-full transition-colors"
@@ -152,14 +177,27 @@ const CardNav: React.FC<CardNavProps> = ({
               </button>
             </div>
 
-            <div className="flex flex-col gap-8 mt-10">
+            <div className="flex flex-col gap-8 mt-4 overflow-y-auto">
               {items.map((item, idx) => (
                 <div key={idx} className="flex flex-col gap-4">
-                  <h3 className="text-sm font-mono text-gray-500 uppercase tracking-widest">{item.label}</h3>
-                  <div className="flex flex-col gap-3 ml-4 border-l border-white/10 pl-6">
+                  <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest pl-1">{item.label}</h3>
+                  <div className="grid grid-cols-2 gap-3">
                     {item.links.map((link, i) => (
-                      <a key={i} href="#" className="text-2xl font-light text-white hover:text-gray-300">
-                        {link.label}
+                      <a 
+                        key={i} 
+                        href="#" 
+                        className={`
+                            bg-[#111] border border-white/5 rounded-2xl p-4 flex flex-col gap-4 active:scale-95 transition-transform
+                            ${link.span === 'col-span-2' ? 'col-span-2' : 'col-span-1'}
+                        `}
+                      >
+                         <div className="text-white">
+                            {link.icon || <Sparkles size={16} />}
+                         </div>
+                         <div>
+                            <div className="text-white font-medium text-sm">{link.label}</div>
+                            {link.description && <div className="text-xs text-gray-500 mt-1">{link.description}</div>}
+                         </div>
                       </a>
                     ))}
                   </div>

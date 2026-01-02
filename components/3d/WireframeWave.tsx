@@ -1,4 +1,3 @@
-
 import React, { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
@@ -8,6 +7,8 @@ declare global {
   namespace JSX {
     interface IntrinsicElements {
       ambientLight: any;
+      mesh: any;
+      sphereGeometry: any;
     }
   }
 }
