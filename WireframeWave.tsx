@@ -1,48 +1,50 @@
 
-import React, { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Sphere, MeshDistortMaterial } from '@react-three/drei';
+import { Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
 const WireframeWave = () => {
-  const meshRef = useRef<THREE.Mesh>(null);
+  const ref = useRef<THREE.Points>(null);
+  
+  // Generate a field of particles
+  const particles = useMemo(() => {
+    const count = 4000;
+    const positions = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      // Spread wide on X, tall on Y, deep on Z
+      positions[i * 3] = (Math.random() - 0.5) * 20; 
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 20; 
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 10; 
+    }
+    return positions;
+  }, []);
 
   useFrame((state) => {
-    if (!meshRef.current) return;
+    if (!ref.current) return;
     const time = state.clock.getElapsedTime();
-    meshRef.current.rotation.x = time * 0.2;
-    meshRef.current.rotation.y = time * 0.3;
+    
+    // Constant subtle rotation
+    ref.current.rotation.y = time * 0.05;
+    
+    // Slight wave movement on Y to make it feel "alive"
+    ref.current.position.y = Math.sin(time * 0.1) * 0.2;
   });
 
   return (
     <>
       <ambientLight intensity={2} />
-      <pointLight position={[10, 10, 10]} intensity={3} color="#fff" />
-      <pointLight position={[-10, -10, -10]} intensity={3} color="#00ffff" />
-      
-      <Sphere args={[1, 128, 128]} scale={2.5} ref={meshRef}>
-        <MeshDistortMaterial
+      <Points ref={ref} positions={particles} stride={3} frustumCulled={false}>
+        <PointMaterial
+          transparent
           color="#ffffff"
-          attach="material"
-          distort={0.5} 
-          speed={2} 
-          roughness={0}
-          metalness={0.1}
-          wireframe={true}
-          emissive="#444444"
-          emissiveIntensity={0.5}
+          size={0.03}
+          sizeAttenuation={true}
+          depthWrite={false}
+          opacity={0.8}
+          blending={THREE.AdditiveBlending}
         />
-      </Sphere>
-      
-      {/* Inner Core for glow */}
-       <Sphere args={[1, 32, 32]} scale={1.8}>
-        <meshBasicMaterial
-          color="#00ffff"
-          wireframe={true}
-          transparent={true}
-          opacity={0.1}
-        />
-      </Sphere>
+      </Points>
     </>
   );
 };
