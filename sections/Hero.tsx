@@ -1,8 +1,10 @@
+
 import React, { Suspense } from 'react';
 import { motion, Variants } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
 import Bubble from '../components/3d/Bubble';
+import { ArrowRight } from 'lucide-react';
 
 const Hero = () => {
   // Explicitly typing Variants to ensure nested transition properties are correctly validated
@@ -55,7 +57,7 @@ const Hero = () => {
         variants={containerVars}
         initial="hidden"
         animate="visible"
-        className="z-10 text-center mix-blend-exclusion pointer-events-none select-none px-4"
+        className="z-10 text-center mix-blend-exclusion pointer-events-none select-none px-4 flex flex-col items-center"
       >
         <h1 className="leading-[0.85] font-black tracking-tighter flex flex-col items-center uppercase text-white">
           <div className="flex items-baseline mb-[-1vw]">
@@ -94,6 +96,25 @@ const Hero = () => {
             PROPERLY
           </motion.div>
         </h1>
+
+        {/* WAITLIST BUTTON */}
+        <motion.button
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.2, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="pointer-events-auto mt-12 group relative flex items-center gap-3 px-8 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full backdrop-blur-md transition-all duration-300"
+        >
+           <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+           </span>
+           <span className="text-sm font-medium tracking-widest uppercase text-white/90">Join Early Access</span>
+           <ArrowRight className="w-4 h-4 text-white/50 group-hover:text-white group-hover:translate-x-1 transition-all" />
+           
+           {/* Subtle glow on hover */}
+           <div className="absolute inset-0 rounded-full ring-1 ring-white/20 group-hover:ring-white/40 transition-all duration-500" />
+        </motion.button>
+        
       </motion.div>
     </section>
   );

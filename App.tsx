@@ -16,21 +16,21 @@ const App = () => {
             description: "Redefining digital education through motion.", 
             span: "col-span-2",
             icon: <Globe size={18} />,
-            color: "from-blue-500 to-purple-600"
+            color: "from-white/10 to-white/5" 
         },
         { 
             label: "The Team", 
             description: "Creators & Engineers.", 
             span: "col-span-1",
             icon: <Cpu size={18} />,
-            color: "from-emerald-500 to-green-600"
+            color: "from-white/10 to-white/5"
         },
         { 
             label: "Careers", 
             description: "Join the movement.", 
             span: "col-span-1",
             icon: <Zap size={18} />,
-            color: "from-orange-500 to-red-600"
+            color: "from-white/10 to-white/5"
         }
       ]
     },
@@ -42,21 +42,21 @@ const App = () => {
             description: "The ultimate creative development course.", 
             span: "col-span-2",
             icon: <Layers size={18} />,
-            color: "from-pink-500 to-rose-500"
+            color: "from-white/10 to-white/5"
         },
         { 
             label: "Components", 
             description: "Copy-paste magic.", 
             span: "col-span-1",
             icon: <Box size={18} />,
-            color: "from-cyan-500 to-blue-500"
+            color: "from-white/10 to-white/5"
         },
         { 
             label: "Templates", 
             description: "Start faster.", 
             span: "col-span-1",
             icon: <Code size={18} />,
-            color: "from-violet-500 to-purple-500"
+            color: "from-white/10 to-white/5"
         }
       ]
     },
@@ -68,21 +68,21 @@ const App = () => {
             description: "Join 10k+ developers.", 
             span: "col-span-2",
             icon: <MessageCircle size={18} />,
-            color: "from-yellow-400 to-orange-500"
+            color: "from-white/10 to-white/5"
         },
         { 
             label: "Twitter", 
             description: "Updates.", 
             span: "col-span-1",
             icon: <Twitter size={18} />,
-            color: "from-sky-400 to-blue-500"
+            color: "from-white/10 to-white/5"
         },
         { 
             label: "Email", 
             description: "Contact us.", 
             span: "col-span-1",
             icon: <Mail size={18} />,
-            color: "from-gray-400 to-gray-600"
+            color: "from-white/10 to-white/5"
         }
       ]
     }

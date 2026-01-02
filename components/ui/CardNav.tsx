@@ -47,10 +47,10 @@ const CardNav: React.FC<CardNavProps> = ({
         initial={{ y: -100, x: "-50%", opacity: 0 }}
         animate={{ y: 0, x: "-50%", opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="fixed top-6 left-1/2 z-50 hidden md:flex items-center gap-1 p-1.5 pl-6 pr-1.5 rounded-full border border-white/10 bg-[#050505]/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
+        className="fixed top-6 left-1/2 z-50 hidden md:flex items-center gap-2 p-1.5 pl-6 pr-1.5 rounded-full border border-white/10 bg-[#050505]/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
       >
         {/* Logo */}
-        <div className="flex items-center gap-2 mr-6 cursor-pointer group select-none">
+        <div className="flex items-center gap-2 mr-4 cursor-pointer group select-none flex-shrink-0">
            {logo ? (
              <img src={logo} alt={logoAlt} className="h-6 w-auto" />
            ) : (
@@ -88,53 +88,59 @@ const CardNav: React.FC<CardNavProps> = ({
               {/* The "Bento" Dropdown Window */}
               <AnimatePresence>
                 {activeIndices === index && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 15, x: "-50%", scale: 0.9, filter: "blur(10px)" }}
-                    animate={{ opacity: 1, y: 0, x: "-50%", scale: 1, filter: "blur(0px)" }}
-                    exit={{ opacity: 0, y: 10, x: "-50%", scale: 0.95, filter: "blur(8px)", transition: { duration: 0.15 } }}
-                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                    className="absolute top-full left-1/2 mt-3 w-[400px] p-2 rounded-3xl border border-white/10 bg-[#0a0a0a]/95 backdrop-blur-2xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.8)] overflow-hidden"
-                  >
-                     {/* Glossy Overlay */}
-                     <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[400px]">
+                      {/* 
+                         NOTE: The outer div has 'pt-4'. This padding acts as the "bridge" 
+                         so the mouse doesn't leave the hover area when moving down.
+                      */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.95, filter: "blur(10px)" }}
+                        animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                        exit={{ opacity: 0, y: 10, scale: 0.95, filter: "blur(8px)", transition: { duration: 0.15 } }}
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                        className="relative p-2 rounded-3xl border border-white/10 bg-[#0a0a0a]/95 backdrop-blur-2xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.8)] overflow-hidden"
+                      >
+                         {/* Glossy Overlay */}
+                         <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
 
-                     {/* Inner Grid */}
-                     <div className="grid grid-cols-2 gap-2 relative z-10">
-                        {item.links.map((link, i) => (
-                            <a 
-                                key={i} 
-                                href={link.href || '#'}
-                                className={`
-                                    relative group overflow-hidden rounded-xl border border-white/5 p-4 flex flex-col justify-between
-                                    transition-all duration-300 hover:border-white/20 hover:shadow-lg
-                                    ${link.span || 'col-span-1'}
-                                    ${link.span === 'col-span-2' ? 'h-24' : 'h-32'}
-                                `}
-                            >
-                                {/* Hover Gradient Background */}
-                                <div className={`absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-gradient-to-br ${link.color || 'from-white to-gray-500'}`} />
-                                
-                                {/* Icon & Arrow */}
-                                <div className="flex justify-between items-start z-10">
-                                    <div className="text-white/50 group-hover:text-white transition-colors duration-300">
-                                        {link.icon || <Sparkles size={16} />}
-                                    </div>
-                                    <GoArrowUpRight className="text-white/20 group-hover:text-white transition-colors duration-300" size={12} />
-                                </div>
-
-                                {/* Text Content */}
-                                <div className="z-10 mt-auto">
-                                    <div className="text-sm font-bold text-white mb-0.5">{link.label}</div>
-                                    {link.description && (
-                                        <div className="text-[10px] text-gray-500 font-medium leading-tight group-hover:text-gray-300 transition-colors">
-                                            {link.description}
+                         {/* Inner Grid */}
+                         <div className="grid grid-cols-2 gap-2 relative z-10">
+                            {item.links.map((link, i) => (
+                                <a 
+                                    key={i} 
+                                    href={link.href || '#'}
+                                    className={`
+                                        relative group overflow-hidden rounded-xl border border-white/5 p-4 flex flex-col justify-between
+                                        transition-all duration-300 hover:border-white/20 hover:shadow-lg
+                                        ${link.span || 'col-span-1'}
+                                        ${link.span === 'col-span-2' ? 'h-24' : 'h-32'}
+                                    `}
+                                >
+                                    {/* Hover Gradient Background - Cleaner / Subtle */}
+                                    <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br ${link.color || 'from-white/5 to-white/10'}`} />
+                                    
+                                    {/* Icon & Arrow */}
+                                    <div className="flex justify-between items-start z-10">
+                                        <div className="text-white/50 group-hover:text-white transition-colors duration-300">
+                                            {link.icon || <Sparkles size={16} />}
                                         </div>
-                                    )}
-                                </div>
-                            </a>
-                        ))}
-                     </div>
-                  </motion.div>
+                                        <GoArrowUpRight className="text-white/20 group-hover:text-white transition-colors duration-300" size={12} />
+                                    </div>
+
+                                    {/* Text Content */}
+                                    <div className="z-10 mt-auto">
+                                        <div className="text-sm font-bold text-white mb-0.5">{link.label}</div>
+                                        {link.description && (
+                                            <div className="text-[10px] text-gray-500 font-medium leading-tight group-hover:text-gray-300 transition-colors">
+                                                {link.description}
+                                            </div>
+                                        )}
+                                    </div>
+                                </a>
+                            ))}
+                         </div>
+                      </motion.div>
+                  </div>
                 )}
               </AnimatePresence>
             </li>
@@ -142,8 +148,8 @@ const CardNav: React.FC<CardNavProps> = ({
         </ul>
 
         {/* CTA */}
-        <div className="ml-6 pl-2">
-           <button className="relative overflow-hidden px-6 py-2.5 rounded-full bg-[#111] text-white text-[10px] font-bold uppercase tracking-widest border border-white/10 hover:border-white/30 transition-all active:scale-95 group">
+        <div className="flex items-center ml-2">
+           <button className="relative overflow-hidden px-5 py-2 rounded-full bg-[#111] text-white text-[10px] font-bold uppercase tracking-widest border border-white/10 hover:border-white/30 transition-all active:scale-95 group whitespace-nowrap">
               <span className="relative z-10">Start Learning</span>
               <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
            </button>
